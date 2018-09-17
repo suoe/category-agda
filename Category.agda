@@ -34,20 +34,13 @@ record Category (c₀ c₁ ℓ : Level) : Set (suc (c₀ ⊔ c₁ ⊔ ℓ)) wher
 open Category hiding (_≈_ ; _∘_ ) public
 
 infix 4 _[_≈_]
-infix 4 _≈_
 infixr 9 _[_∘_]
 
 _[_≈_] : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b : Obj C} → Rel (Hom C a b) ℓ
 _[_≈_] C {a} {b} = equaloid (Homsetoid C a b)
 
-_≈_ : {c₀ c₁ ℓ : Level} {C : Category c₀ c₁ ℓ} {a b : Obj C} → Rel (Hom C a b) ℓ
-_≈_ {C = C} = C [_≈_]
-
 _[_∘_] : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b c : Obj C} → Hom C b c → Hom C a b → Hom C a c
 C [ f ∘ g ] = Category._∘_ C f g
-
-_∘_ : {c₀ c₁ ℓ : Level} {C : Category c₀ c₁ ℓ} {a b c : Obj C} → Hom C b c → Hom C a b → Hom C a c
-_∘_ {C = C} = C [_∘_]
 
 ≈-isEquiv : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b : Obj C} → IsEquivalence (_[_≈_] C {a} {b})
 ≈-isEquiv C {a} {b} = isEquivalence (Homsetoid C a b)
