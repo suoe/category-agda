@@ -64,3 +64,17 @@ op C = record {
       id-l = id-r C ;
       ∘-assoc = ≈-sym C (∘-assoc C) ;
       ∘-resp-≈ = flip (∘-resp-≈ C) }
+
+data _[_~_] {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b : Obj C} (f : Hom C a b)
+                : ∀ {c d : Obj C} (g : Hom C c d) → Set (suc (c₀ ⊔ c₁ ⊔ ℓ)) where
+  ≈-~ : {g : Hom C a b} → C [ f ≈ g ] → C [ f ~ g ]
+
+~-refl : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b : Obj C} {f : Hom C a b} → C [ f ~ f ]
+~-refl C = ≈-~ (≈-refl C)
+
+~-sym : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b c d : Obj C} {f : Hom C a b} {g : Hom C c d} → C [ f ~ g ] → C [ g ~ f ]
+~-sym C (≈-~ f≈g) = ≈-~ (≈-sym C f≈g)
+
+~-trans : {c₀ c₁ ℓ : Level} (C : Category c₀ c₁ ℓ) {a b a′ b′ a′′ b′′ : Obj C} {f : Hom C a b} {g : Hom C a′ b′} {h : Hom C a′′ b′′}
+                   → C [ f ~ g ] → C [ g ~ h ] → C [ f ~ h ]
+~-trans C (≈-~ f≈g) (≈-~ g≈h) = ≈-~ (≈-trans C f≈g g≈h)
